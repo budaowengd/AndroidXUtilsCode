@@ -1,11 +1,16 @@
 package com.blankj.utilcode.util;
 
+import android.support.v4.util.SimpleArrayMap;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +28,7 @@ public final class GsonUtils {
 
     private static final Gson GSON = createGson(true);
 
-    private static final Gson GSON_NO_NULLS = createGson(false);
+//    private static final Gson GSON_NO_NULLS = createGson(false);
 
     private GsonUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -45,7 +50,8 @@ public final class GsonUtils {
      * @return {@link Gson} instance.
      */
     public static Gson getGson(final boolean serializeNulls) {
-        return serializeNulls ? GSON_NO_NULLS : GSON;
+        // return serializeNulls ? GSON_NO_NULLS : GSON;
+        return GSON;
     }
 
     /**
@@ -66,7 +72,8 @@ public final class GsonUtils {
      * @return object serialized into json.
      */
     public static String toJson(final Object object, final boolean includeNulls) {
-        return includeNulls ? GSON.toJson(object) : GSON_NO_NULLS.toJson(object);
+        // return includeNulls ? GSON.toJson(object) : GSON_NO_NULLS.toJson(object);
+        return GSON.toJson(object);
     }
 
 
@@ -167,6 +174,62 @@ public final class GsonUtils {
     }
 
     /**
+     * 根据json转成list列表
+     */
+    public static <T> ArrayList<T> getListFromJson(String json, Class<T> cls) {
+        return GSON.fromJson(json, new TypeToken<List>() {
+        }.getType());
+    }
+
+    /**
+     * 根据list列表 转成 json
+     */
+    public static String getJsonForList(List<Object> dataList) {
+        return GSON.toJson(dataList, new TypeToken<List>() {
+        }.getType());
+    }
+
+    public static String getJsonForMap(SimpleArrayMap<String, Object> params) {
+        JsonObject jsonObj = new JsonObject();
+        for (int i = 0; i < params.size(); i++) {
+            String key = params.keyAt(i);
+            Object value = params.get(key);
+            if (value != null) {
+                jsonObj.addProperty(key, value.toString());
+            }
+        }
+        return GSON.toJson(jsonObj);
+    }
+
+
+    /**
+     * 如果map 里包含Array,通过该方法转换成json
+     *
+     * @param mapParams
+     * @return
+     */
+    public static String getJsonForArrayMap(SimpleArrayMap<String, Object> params) {
+        JsonObject jsonObj = new JsonObject();
+        for (int i = 0; i < params.size(); i++) {
+            String key = params.keyAt(i);
+            Object value = params.get(key);
+            if (value instanceof List) {
+                JsonArray ja = new JsonArray();
+                for (Object item : ((List) value)) {
+                    ja.add(item.toString());
+                }
+                jsonObj.add(key, ja);
+            } else {
+                if (value != null) {
+                    jsonObj.addProperty(key, value.toString());
+                }
+            }
+        }
+        return GSON.toJson(jsonObj);
+    }
+
+
+    /**
      * Create a pre-configured {@link Gson} instance.
      *
      * @param serializeNulls determines if nulls will be serialized.
@@ -177,4 +240,6 @@ public final class GsonUtils {
         if (serializeNulls) builder.serializeNulls();
         return builder.create();
     }
+
+
 }

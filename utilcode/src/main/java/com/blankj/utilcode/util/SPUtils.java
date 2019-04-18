@@ -84,6 +84,84 @@ public final class SPUtils {
     }
 
     /**
+     * 保存一个Map到默认的sp种
+     */
+    public static void saveData(Map<String, Object> params) {
+        SharedPreferences.Editor edit = SPUtils.getInstance().sp.edit();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if (value == null) continue;
+            String type = value.getClass().getSimpleName();
+            if ("String".equals(type)) {
+                edit.putString(key, (String) value);
+            } else if ("Integer".equals(type)) {
+                edit.putInt(key, (Integer) value);
+            } else if ("Boolean".equals(type)) {
+                edit.putBoolean(key, (Boolean) value);
+            } else if ("Float".equals(type)) {
+                edit.putFloat(key, (Float) value);
+            } else if ("Long".equals(type)) {
+                edit.putLong(key, (Long) value);
+            }
+        }
+        edit.apply();
+    }
+
+
+
+    /**
+     * 保存单个数据到默认的Sp中. 默认的sp名字是空字符串
+     */
+    public static void saveData(String key, Object value) {
+        if (value != null) {
+            String type = value.getClass().getSimpleName();
+            SharedPreferences sp = SPUtils.getInstance().sp;
+            SharedPreferences.Editor edit = sp.edit();
+            if ("String".equals(type)) {
+                edit.putString(key, (String) value);
+            } else if ("Integer".equals(type)) {
+                edit.putInt(key, (Integer) value);
+            } else if ("Boolean".equals(type)) {
+                edit.putBoolean(key, (Boolean) value);
+            } else if ("Float".equals(type)) {
+                edit.putFloat(key, (Float) value);
+            } else if ("Long".equals(type)) {
+                edit.putLong(key, (Long) value);
+            } else if (type.contains("Set")) {
+                edit.putStringSet(key, (Set<String>) value);
+            }
+            edit.apply();
+        }
+    }
+
+    /**
+     * 从默认的sp中(名字是空字符串),读取数据
+     */
+    public static Object getData(String key, Object defValue) {
+        if (defValue == null) {
+            throw new NullPointerException("SharedPreferences " + key + " 默认值不能为空");
+        }
+        SharedPreferences sp = SPUtils.getInstance().sp;
+        String type = defValue.getClass().getSimpleName();
+        // defValue为为默认值，如果当前获取不到数据就返回它
+        if ("String".equals(type)) {
+            return sp.getString(key, (String) defValue);
+        } else if ("Integer".equals(type)) {
+            return sp.getInt(key, (Integer) defValue);
+        } else if ("Boolean".equals(type)) {
+            return sp.getBoolean(key, (Boolean) defValue);
+        } else if ("Float".equals(type)) {
+            return sp.getFloat(key, (Float) defValue);
+        } else if ("Long".equals(type)) {
+            return sp.getLong(key, (Long) defValue);
+        } else if (type.contains("Set")) {
+            return sp.getStringSet(key, (Set<String>) defValue);
+        }
+        return "";
+    }
+
+    /**
      * Put the string value in sp.
      *
      * @param key   The key of sp.
