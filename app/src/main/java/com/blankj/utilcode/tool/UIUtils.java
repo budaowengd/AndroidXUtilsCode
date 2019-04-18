@@ -7,4 +7,10 @@ package com.blankj.utilcode.tool;
  * @desc:
  */
 public class UIUtils {
+    public static void f1() {
+
+    }
+
+    public static void f2() {
+    }
 }
