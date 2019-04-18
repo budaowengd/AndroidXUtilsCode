@@ -1,4 +1,4 @@
-package com.lx;
+package com.blankj.utilcode;
 
 import org.junit.Test;
 
