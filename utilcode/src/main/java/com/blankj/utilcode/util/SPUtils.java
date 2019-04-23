@@ -496,6 +496,10 @@ public final class SPUtils {
         clear(false);
     }
 
+    public SharedPreferences getSp() {
+        return sp;
+    }
+
     /**
      * Remove all preferences in sp.
      *
