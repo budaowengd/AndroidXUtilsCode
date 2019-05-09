@@ -1057,6 +1057,20 @@ public final class ActivityUtils {
     }
 
     /**
+     * 获取当前栈顶Activity
+     */
+    public static Activity getFrontActiveActivity() {
+        List<Activity> activityList = getActivityList();
+        for (int i = activityList.size() - 1; i >= 0; i--) {
+            Activity activity = activityList.get(i);
+            if (!activity.isFinishing()) {
+                return activity;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Return the name of launcher activity.
      *
      * @param pkg The name of the package.

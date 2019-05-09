@@ -134,6 +134,18 @@ public final class SPUtils {
         }
     }
 
+    public static String getStringValue(String key) {
+        return (String) getData(key, "");
+    }
+
+    public static int getIntValue(String key) {
+        return (int) getData(key, -1);
+    }
+
+    public static long getLongValue(String key) {
+        return (long) getData(key, -1L);
+    }
+
     /**
      * 从默认的sp中(名字是空字符串),读取数据
      */
