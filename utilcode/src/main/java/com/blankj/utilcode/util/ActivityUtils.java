@@ -1061,7 +1061,14 @@ public final class ActivityUtils {
      */
     public static Activity getFrontActiveActivity() {
         List<Activity> activityList = getActivityList();
-        for (int i = activityList.size() - 1; i >= 0; i--) {
+        int size = activityList.size();
+        if (size > 0) {
+            Activity activity = activityList.get(size - 1);
+            if (!activity.isFinishing()) {
+                return activity;
+            }
+        }
+        for (int i = size - 2; i >= 0; i--) {
             Activity activity = activityList.get(i);
             if (!activity.isFinishing()) {
                 return activity;
