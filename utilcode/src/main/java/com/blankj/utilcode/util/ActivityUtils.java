@@ -1056,6 +1056,15 @@ public final class ActivityUtils {
         return getLauncherActivity(Utils.getApp().getPackageName());
     }
 
+    public static Activity getSpecActivity(Class specClass) {
+        for (Activity activity : getActivityList()) {
+            if (activity.getClass().equals(specClass)) {
+                return activity;
+            }
+        }
+        return null;
+    }
+
     /**
      * 获取当前栈顶Activity
      */
