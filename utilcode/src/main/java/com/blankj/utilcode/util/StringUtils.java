@@ -29,6 +29,16 @@ public final class StringUtils {
     }
 
     /**
+     * Return whether the string is null or 0-length.
+     *
+     * @param s The string.
+     * @return {@code true}: yes<br> {@code false}: no
+     */
+    public static boolean isNotEmpty(final CharSequence s) {
+        return s != null && s.length() > 0;
+    }
+
+    /**
      * Return whether the string is null or whitespace.
      *
      * @param s The string.
