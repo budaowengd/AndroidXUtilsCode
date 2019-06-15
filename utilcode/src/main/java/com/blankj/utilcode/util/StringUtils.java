@@ -28,12 +28,7 @@ public final class StringUtils {
         return s == null || s.length() == 0;
     }
 
-    /**
-     * Return whether the string is null or 0-length.
-     *
-     * @param s The string.
-     * @return {@code true}: yes<br> {@code false}: no
-     */
+
     public static boolean isNotEmpty(final CharSequence s) {
         return s != null && s.length() > 0;
     }
@@ -246,5 +241,32 @@ public final class StringUtils {
         } catch (Resources.NotFoundException ignore) {
             return new String[0];
         }
+    }
+
+
+    /**
+     * 将字符串转Int类型
+     */
+    public static int getInt(String value) {
+        int count = 0;
+        try {
+            count = Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    /**
+     * 将字符串转Integer类型
+     */
+    public static double getDouble(String value) {
+        double count = 0.0;
+        try {
+            count = Double.parseDouble(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return count;
     }
 }
