@@ -244,29 +244,5 @@ public final class StringUtils {
     }
 
 
-    /**
-     * 将字符串转Int类型
-     */
-    public static int getInt(String value) {
-        int count = 0;
-        try {
-            count = Integer.parseInt(value);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        return count;
-    }
 
-    /**
-     * 将字符串转Integer类型
-     */
-    public static double getDouble(String value) {
-        double count = 0.0;
-        try {
-            count = Double.parseDouble(value);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        return count;
-    }
 }

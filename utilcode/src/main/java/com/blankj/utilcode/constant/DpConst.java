@@ -1,12 +1,12 @@
-package com.blankj.utilcode.util;
+package com.blankj.utilcode.constant;
 
 import android.content.res.Resources;
 
 /**
- * @author: luoXiong
- * @date: 2019/4/18 14:28
- * @version: 1.0
- * @desc:
+ * author: luoXiong
+ * date: 2019/4/18 14:28
+ * version: 1.0
+ * desc: dp常用常量
  */
 public class DpConst {
     public static final float dp1 = Resources.getSystem().getDisplayMetrics().density;
