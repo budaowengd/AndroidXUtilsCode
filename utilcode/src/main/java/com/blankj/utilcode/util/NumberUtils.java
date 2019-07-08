@@ -5,7 +5,7 @@ package com.blankj.utilcode.util;
  * e-mail: 382060748@qq.com
  * date: 2019/7/8 16:13
  * version: 1.0
- * desc:
+ * desc: 数字相关
  */
 public class NumberUtils {
     /**
