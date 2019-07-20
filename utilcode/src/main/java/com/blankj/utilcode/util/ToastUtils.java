@@ -39,18 +39,19 @@ import java.lang.reflect.Field;
  */
 public final class ToastUtils {
 
-    private static final int     COLOR_DEFAULT = 0xFEFFFFFF;
-    private static final Handler HANDLER       = new Handler(Looper.getMainLooper());
-    private static final String  NULL          = "null";
+    private static final int COLOR_DEFAULT = 0xFEFFFFFF;
+    private static final Handler HANDLER = new Handler(Looper.getMainLooper());
+    private static final String NULL = "null";
 
     private static IToast iToast;
-    private static int    sGravity     = -1;
-    private static int    sXOffset     = -1;
-    private static int    sYOffset     = -1;
-    private static int    sBgColor     = COLOR_DEFAULT;
-    private static int    sBgResource  = -1;
-    private static int    sMsgColor    = COLOR_DEFAULT;
-    private static int    sMsgTextSize = -1;
+    private static int sGravity = -1;
+    private static int sXOffset = -1;
+    private static int sYOffset = -1;
+    private static int sBgColor = COLOR_DEFAULT;
+    private static int sBgResource = -1;
+    private static int sMsgColor = COLOR_DEFAULT;
+    private static int sMsgTextSize = -1;
+    private static int sMsgTextPadding = -1;
 
     private ToastUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -103,6 +104,15 @@ public final class ToastUtils {
      */
     public static void setMsgTextSize(final int textSize) {
         sMsgTextSize = textSize;
+    }
+
+    /**
+     * Set the text padding of message.
+     *
+     * @param textSize The text padding of message.
+     */
+    public static void setMsgTextPadding(int padding) {
+        sMsgTextPadding = padding;
     }
 
     /**
@@ -258,6 +268,10 @@ public final class ToastUtils {
                 if (sMsgTextSize != -1) {
                     tvMessage.setTextSize(sMsgTextSize);
                 }
+                if (sMsgTextPadding > 0) {
+                    tvMessage.setPadding(sMsgTextPadding, sMsgTextPadding, sMsgTextPadding, sMsgTextPadding);
+                }
+
                 if (sGravity != -1 || sXOffset != -1 || sYOffset != -1) {
                     iToast.setGravity(sGravity, sXOffset, sYOffset);
                 }
@@ -292,9 +306,7 @@ public final class ToastUtils {
             final View toastView = iToast.getView();
             Drawable background = toastView.getBackground();
             if (background != null) {
-                background.setColorFilter(
-                        new PorterDuffColorFilter(sBgColor, PorterDuff.Mode.SRC_IN)
-                );
+                background.setColorFilter(new PorterDuffColorFilter(sBgColor, PorterDuff.Mode.SRC_IN));
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     toastView.setBackground(new ColorDrawable(sBgColor));
@@ -328,8 +340,7 @@ public final class ToastUtils {
     }
 
     private static View getView(@LayoutRes final int layoutId) {
-        LayoutInflater inflate =
-                (LayoutInflater) Utils.getApp().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflate = (LayoutInflater) Utils.getApp().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //noinspection ConstantConditions
         return inflate.inflate(layoutId, null);
     }
@@ -351,8 +362,7 @@ public final class ToastUtils {
         }
 
         private static Toast makeNormalToast(Context context, CharSequence text, int duration) {
-            @SuppressLint("ShowToast")
-            Toast toast = Toast.makeText(context, "", duration);
+            @SuppressLint("ShowToast") Toast toast = Toast.makeText(context, "", duration);
             toast.setText(text);
             return toast;
         }
@@ -411,19 +421,18 @@ public final class ToastUtils {
 
     static class ToastWithoutNotification extends AbsToast {
 
-        private View          mView;
+        private View mView;
         private WindowManager mWM;
 
         private WindowManager.LayoutParams mParams = new WindowManager.LayoutParams();
 
-        private static final Utils.OnActivityDestroyedListener LISTENER =
-                new Utils.OnActivityDestroyedListener() {
-                    @Override
-                    public void onActivityDestroyed(Activity activity) {
-                        if (iToast == null) return;
-                        iToast.cancel();
-                    }
-                };
+        private static final Utils.OnActivityDestroyedListener LISTENER = new Utils.OnActivityDestroyedListener() {
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                if (iToast == null) return;
+                iToast.cancel();
+            }
+        };
 
         ToastWithoutNotification(Toast toast) {
             super(toast);
@@ -457,9 +466,7 @@ public final class ToastUtils {
             }
 
             final Configuration config = context.getResources().getConfiguration();
-            final int gravity = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
-                    ? Gravity.getAbsoluteGravity(mToast.getGravity(), config.getLayoutDirection())
-                    : mToast.getGravity();
+            final int gravity = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 ? Gravity.getAbsoluteGravity(mToast.getGravity(), config.getLayoutDirection()) : mToast.getGravity();
 
             mParams.y = mToast.getYOffset();
             mParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -468,9 +475,7 @@ public final class ToastUtils {
             mParams.windowAnimations = android.R.style.Animation_Toast;
 
             mParams.setTitle("ToastWithoutNotification");
-            mParams.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                    | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                    | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+            mParams.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
             mParams.gravity = gravity;
             if ((gravity & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.FILL_HORIZONTAL) {
                 mParams.horizontalWeight = 1.0f;
