@@ -8,6 +8,20 @@ package com.blankj.utilcode.util;
  * desc: 数字相关
  */
 public class NumberUtils {
+
+    /**
+     * 将字符串转Long类型
+     */
+    public static long getLong(String value) {
+        long count = 0L;
+        try {
+            count = Long.parseLong(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
     /**
      * 将字符串转Int类型
      */
