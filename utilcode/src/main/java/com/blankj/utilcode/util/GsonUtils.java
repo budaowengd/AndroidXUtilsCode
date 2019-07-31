@@ -177,8 +177,7 @@ public final class GsonUtils {
      * 根据json转成list列表
      */
     public static <T> ArrayList<T> getListFromJson(String json, Class<T> cls) {
-        return GSON.fromJson(json, new TypeToken<List>() {
-        }.getType());
+        return GSON.fromJson(json, getListType(cls));
     }
 
     /**
@@ -204,9 +203,6 @@ public final class GsonUtils {
 
     /**
      * 如果map 里包含Array,通过该方法转换成json
-     *
-     * @param mapParams
-     * @return
      */
     public static String getJsonForArrayMap(SimpleArrayMap<String, Object> params) {
         JsonObject jsonObj = new JsonObject();
