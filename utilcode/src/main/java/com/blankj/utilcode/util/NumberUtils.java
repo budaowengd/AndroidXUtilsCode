@@ -8,6 +8,18 @@ package com.blankj.utilcode.util;
  * desc: 数字相关
  */
 public class NumberUtils {
+    /**
+     * 将字符串转Int类型
+     */
+    public static int getInt(String value) {
+        int count = 0;
+        try {
+            count = Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 
     /**
      * 将字符串转Long类型
@@ -22,19 +34,19 @@ public class NumberUtils {
         return count;
     }
 
+
     /**
-     * 将字符串转Int类型
+     * 将字符串转Float类型
      */
-    public static int getInt(String value) {
-        int count = 0;
+    public static double getFloat(String value) {
+        float count = 0.0f;
         try {
-            count = Integer.parseInt(value);
+            count = Float.parseFloat(value);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
         return count;
     }
-
     /**
      * 将字符串转Integer类型
      */
