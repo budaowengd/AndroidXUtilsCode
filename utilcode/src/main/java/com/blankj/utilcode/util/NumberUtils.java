@@ -38,7 +38,7 @@ public class NumberUtils {
     /**
      * 将字符串转Float类型
      */
-    public static double getFloat(String value) {
+    public static float getFloat(String value) {
         float count = 0.0f;
         try {
             count = Float.parseFloat(value);
