@@ -28,6 +28,64 @@ public final class SPStaticUtils {
     }
 
     /**
+     * 保存一个Map到默认的sp种
+     */
+    public static void put(Map<String, Object> params) {
+        getDefaultSPUtils().put(params, false);
+    }
+
+    /**
+     * 保存一个Map到默认的sp种
+     */
+    public static void put(Map<String, Object> params, boolean isCommit) {
+        getDefaultSPUtils().put(params, isCommit);
+    }
+
+    /**
+     * 保存单个数据到默认的Sp中. 默认的sp名字是空字符串
+     */
+    public static void put(String key, Object value) {
+        if (value != null) {
+            String type = value.getClass().getSimpleName();
+            if ("String".equals(type)) {
+                put(key, (String) value, getDefaultSPUtils());
+            } else if ("Integer".equals(type)) {
+                put(key, (Integer) value, getDefaultSPUtils());
+            } else if ("Boolean".equals(type)) {
+                put(key, (Boolean) value, getDefaultSPUtils());
+            } else if ("Float".equals(type)) {
+                put(key, (Float) value, getDefaultSPUtils());
+            } else if ("Long".equals(type)) {
+                put(key, (Long) value, getDefaultSPUtils());
+            } else if (type.contains("Set")) {
+                put(key, (Set<String>) value, getDefaultSPUtils());
+            }
+        }
+    }
+
+    /**
+     * 保存单个数据到默认的Sp中. 默认的sp名字是空字符串
+     */
+    public static void put(String key, Object value, boolean isCommit) {
+        if (value != null) {
+            String type = value.getClass().getSimpleName();
+            if ("String".equals(type)) {
+                put(key, (String) value, isCommit, getDefaultSPUtils());
+            } else if ("Integer".equals(type)) {
+                put(key, (Integer) value, isCommit, getDefaultSPUtils());
+            } else if ("Boolean".equals(type)) {
+                put(key, (Boolean) value, isCommit, getDefaultSPUtils());
+            } else if ("Float".equals(type)) {
+                put(key, (Float) value, isCommit, getDefaultSPUtils());
+            } else if ("Long".equals(type)) {
+                put(key, (Long) value, isCommit, getDefaultSPUtils());
+            } else if (type.contains("Set")) {
+                put(key, (Set<String>) value, isCommit, getDefaultSPUtils());
+            }
+        }
+    }
+
+    /**
      * Put the string value in sp.
      *
      * @param key   The key of sp.
@@ -262,9 +320,7 @@ public final class SPStaticUtils {
      * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
      *                 false to use {@link SharedPreferences.Editor#apply()}
      */
-    public static void put(@NonNull final String key,
-                           final Set<String> value,
-                           final boolean isCommit) {
+    public static void put(@NonNull final String key, final Set<String> value, final boolean isCommit) {
         put(key, value, isCommit, getDefaultSPUtils());
     }
 
@@ -286,8 +342,7 @@ public final class SPStaticUtils {
      * @param defaultValue The default value if the sp doesn't exist.
      * @return the set of string value if sp exists or {@code defaultValue} otherwise
      */
-    public static Set<String> getStringSet(@NonNull final String key,
-                                           final Set<String> defaultValue) {
+    public static Set<String> getStringSet(@NonNull final String key, final Set<String> defaultValue) {
         return getStringSet(key, defaultValue, getDefaultSPUtils());
     }
 
@@ -371,10 +426,7 @@ public final class SPStaticUtils {
      *                 false to use {@link SharedPreferences.Editor#apply()}
      * @param spUtils  The instance of {@link SPUtils}.
      */
-    public static void put(@NonNull final String key,
-                           final String value,
-                           final boolean isCommit,
-                           @NonNull final SPUtils spUtils) {
+    public static void put(@NonNull final String key, final String value, final boolean isCommit, @NonNull final SPUtils spUtils) {
         spUtils.put(key, value, isCommit);
     }
 
@@ -398,9 +450,7 @@ public final class SPStaticUtils {
      * @param spUtils      The instance of {@link SPUtils}.
      * @return the string value if sp exists or {@code defaultValue} otherwise
      */
-    public static String getString(@NonNull final String key,
-                                   final String defaultValue,
-                                   @NonNull final SPUtils spUtils) {
+    public static String getString(@NonNull final String key, final String defaultValue, @NonNull final SPUtils spUtils) {
         return spUtils.getString(key, defaultValue);
     }
 
@@ -425,10 +475,7 @@ public final class SPStaticUtils {
      *                 false to use {@link SharedPreferences.Editor#apply()}
      * @param spUtils  The instance of {@link SPUtils}.
      */
-    public static void put(@NonNull final String key,
-                           final int value,
-                           final boolean isCommit,
-                           @NonNull final SPUtils spUtils) {
+    public static void put(@NonNull final String key, final int value, final boolean isCommit, @NonNull final SPUtils spUtils) {
         spUtils.put(key, value, isCommit);
     }
 
@@ -475,10 +522,7 @@ public final class SPStaticUtils {
      *                 false to use {@link SharedPreferences.Editor#apply()}
      * @param spUtils  The instance of {@link SPUtils}.
      */
-    public static void put(@NonNull final String key,
-                           final long value,
-                           final boolean isCommit,
-                           @NonNull final SPUtils spUtils) {
+    public static void put(@NonNull final String key, final long value, final boolean isCommit, @NonNull final SPUtils spUtils) {
         spUtils.put(key, value, isCommit);
     }
 
@@ -525,10 +569,7 @@ public final class SPStaticUtils {
      *                 false to use {@link SharedPreferences.Editor#apply()}
      * @param spUtils  The instance of {@link SPUtils}.
      */
-    public static void put(@NonNull final String key,
-                           final float value,
-                           final boolean isCommit,
-                           @NonNull final SPUtils spUtils) {
+    public static void put(@NonNull final String key, final float value, final boolean isCommit, @NonNull final SPUtils spUtils) {
         spUtils.put(key, value, isCommit);
     }
 
@@ -575,10 +616,7 @@ public final class SPStaticUtils {
      *                 false to use {@link SharedPreferences.Editor#apply()}
      * @param spUtils  The instance of {@link SPUtils}.
      */
-    public static void put(@NonNull final String key,
-                           final boolean value,
-                           final boolean isCommit,
-                           @NonNull final SPUtils spUtils) {
+    public static void put(@NonNull final String key, final boolean value, final boolean isCommit, @NonNull final SPUtils spUtils) {
         spUtils.put(key, value, isCommit);
     }
 
@@ -601,9 +639,7 @@ public final class SPStaticUtils {
      * @param spUtils      The instance of {@link SPUtils}.
      * @return the boolean value if sp exists or {@code defaultValue} otherwise
      */
-    public static boolean getBoolean(@NonNull final String key,
-                                     final boolean defaultValue,
-                                     @NonNull final SPUtils spUtils) {
+    public static boolean getBoolean(@NonNull final String key, final boolean defaultValue, @NonNull final SPUtils spUtils) {
         return spUtils.getBoolean(key, defaultValue);
     }
 
@@ -627,10 +663,7 @@ public final class SPStaticUtils {
      *                 false to use {@link SharedPreferences.Editor#apply()}
      * @param spUtils  The instance of {@link SPUtils}.
      */
-    public static void put(@NonNull final String key,
-                           final Set<String> value,
-                           final boolean isCommit,
-                           @NonNull final SPUtils spUtils) {
+    public static void put(@NonNull final String key, final Set<String> value, final boolean isCommit, @NonNull final SPUtils spUtils) {
         spUtils.put(key, value, isCommit);
     }
 
@@ -654,9 +687,7 @@ public final class SPStaticUtils {
      * @param spUtils      The instance of {@link SPUtils}.
      * @return the set of string value if sp exists or {@code defaultValue} otherwise
      */
-    public static Set<String> getStringSet(@NonNull final String key,
-                                           final Set<String> defaultValue,
-                                           @NonNull final SPUtils spUtils) {
+    public static Set<String> getStringSet(@NonNull final String key, final Set<String> defaultValue, @NonNull final SPUtils spUtils) {
         return spUtils.getStringSet(key, defaultValue);
     }
 

@@ -86,12 +86,14 @@ public final class SPUtils {
     /**
      * 保存一个Map到默认的sp种
      */
-    public static void saveData(Map<String, Object> params) {
-        SharedPreferences.Editor edit = SPUtils.getInstance().sp.edit();
+    public void put(Map<String, Object> params, boolean isCommit) {
+        SharedPreferences.Editor edit = sp.edit();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
-            if (value == null) continue;
+            if (value == null) {
+                continue;
+            }
             String type = value.getClass().getSimpleName();
             if ("String".equals(type)) {
                 edit.putString(key, (String) value);
@@ -105,34 +107,13 @@ public final class SPUtils {
                 edit.putLong(key, (Long) value);
             }
         }
-        edit.apply();
-    }
-
-
-    /**
-     * 保存单个数据到默认的Sp中. 默认的sp名字是空字符串
-     */
-    public static void saveData(String key, Object value) {
-        if (value != null) {
-            String type = value.getClass().getSimpleName();
-            SharedPreferences sp = SPUtils.getInstance().sp;
-            SharedPreferences.Editor edit = sp.edit();
-            if ("String".equals(type)) {
-                edit.putString(key, (String) value);
-            } else if ("Integer".equals(type)) {
-                edit.putInt(key, (Integer) value);
-            } else if ("Boolean".equals(type)) {
-                edit.putBoolean(key, (Boolean) value);
-            } else if ("Float".equals(type)) {
-                edit.putFloat(key, (Float) value);
-            } else if ("Long".equals(type)) {
-                edit.putLong(key, (Long) value);
-            } else if (type.contains("Set")) {
-                edit.putStringSet(key, (Set<String>) value);
-            }
+        if (isCommit) {
+            edit.commit();
+        } else {
             edit.apply();
         }
     }
+
 
     public static String getStringValue(String key) {
         return (String) getData(key, "");
@@ -425,9 +406,7 @@ public final class SPUtils {
      * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
      *                 false to use {@link SharedPreferences.Editor#apply()}
      */
-    public void put(@NonNull final String key,
-                    final Set<String> value,
-                    final boolean isCommit) {
+    public void put(@NonNull final String key, final Set<String> value, final boolean isCommit) {
         if (isCommit) {
             sp.edit().putStringSet(key, value).commit();
         } else {
@@ -453,8 +432,7 @@ public final class SPUtils {
      * @param defaultValue The default value if the sp doesn't exist.
      * @return the set of string value if sp exists or {@code defaultValue} otherwise
      */
-    public Set<String> getStringSet(@NonNull final String key,
-                                    final Set<String> defaultValue) {
+    public Set<String> getStringSet(@NonNull final String key, final Set<String> defaultValue) {
         return sp.getStringSet(key, defaultValue);
     }
 
